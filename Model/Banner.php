@@ -6,6 +6,14 @@ App::uses('BannerAppModel', 'Banner.Model');
  */
 class Banner extends BannerAppModel
 {
+    /**
+     * Define Custom Find Type
+     *
+     * With this we'll have all published banners
+     *
+     * @var array
+     */
+    public $findMethods = array('published' =>  true);
 
     /**
      * Define Behaviors
@@ -134,5 +142,12 @@ class Banner extends BannerAppModel
 		return $query;
 	}
 
+    protected function _findPublished($state, $query, $results = array()) {
+        if ($state === 'before') {
+            $query['conditions']['Banner.published'] = true;
+            return $query;
+        }
+        return $results;
+    }
 
 }
